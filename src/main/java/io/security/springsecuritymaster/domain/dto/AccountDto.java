@@ -1,10 +1,11 @@
 package io.security.springsecuritymaster.domain.dto;
 
-import lombok.Builder;
-import lombok.Getter;
+import lombok.*;
 
-@Getter
+@Data
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class AccountDto {
     private String id;
     private String username;
