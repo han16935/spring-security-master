@@ -1,9 +1,11 @@
 package io.security.springsecuritymaster.controller;
 
+import io.security.springsecuritymaster.domain.dto.AccountDto;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
@@ -21,24 +23,34 @@ public class LoginController {
     @GetMapping("/login")
     public String login(@RequestParam(required = false) String error,
                         @RequestParam(required = false) String exception,
-                        Model model){
+                        Model model) {
         model.addAttribute("error", error);
         model.addAttribute("exception", exception);
         return "login/login";
     }
 
     @GetMapping("/signup")
-    public String signup(){
+    public String signup() {
         return "login/signup";
     }
 
     @GetMapping("/logout")
     public String logout(HttpServletRequest request,
-                         HttpServletResponse response){
+                         HttpServletResponse response) {
         Authentication authentication = SecurityContextHolder.getContextHolderStrategy().getContext().getAuthentication();
-        if(authentication != null) {
+        if (authentication != null) {
             new SecurityContextLogoutHandler().logout(request, response, authentication);
         }
         return "redirect:/login";
+    }
+
+    @GetMapping("/denied")
+    public String accessDenied(@RequestParam(required = false) String exception,
+                               @AuthenticationPrincipal AccountDto accountDto, // @AuthenticationPrincipal 통해 UserDetails 내부 AccountDto 가져옴?
+                               Model model) {
+        model.addAttribute("username", accountDto.getUsername());
+        model.addAttribute("exception", exception);
+
+        return "login/denied";
     }
 }
