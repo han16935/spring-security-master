@@ -37,7 +37,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/css/**", "/images/**", "/js/**", "/favicon.*", "/error", "/*/icon-*").permitAll()
                         .requestMatchers("/", "/signup", "/login*").permitAll()
-                        .requestMatchers("/user").hasAuthority("ROLE_USER")
+                        .requestMatchers("/user").hasAuthority("ROLE_USER") // accessDeniedHandler 확인 위해 추가
                         .requestMatchers("/manager").hasAuthority("ROLE_MANAGER")
                         .requestMatchers("/admin").hasAuthority("ROLE_ADMIN")
                         .anyRequest().authenticated())

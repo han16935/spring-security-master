@@ -46,7 +46,7 @@ public class LoginController {
 
     @GetMapping("/denied")
     public String accessDenied(@RequestParam(required = false) String exception,
-                               @AuthenticationPrincipal AccountDto accountDto, // @AuthenticationPrincipal 통해 UserDetails 내부 AccountDto 가져옴?
+                               @AuthenticationPrincipal AccountDto accountDto, // @AuthenticationPrincipal 통해 UserDetails 내부 AccountDto 가져옴
                                Model model) {
         model.addAttribute("username", accountDto.getUsername());
         model.addAttribute("exception", exception);
