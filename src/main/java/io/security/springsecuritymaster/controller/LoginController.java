@@ -22,7 +22,7 @@ public class LoginController {
     }
 
     @GetMapping("/logout")
-    public String signup(HttpServletRequest request,
+    public String logout(HttpServletRequest request,
                          HttpServletResponse response){
         Authentication authentication = SecurityContextHolder.getContextHolderStrategy().getContext().getAuthentication();
         if(authentication != null) {
