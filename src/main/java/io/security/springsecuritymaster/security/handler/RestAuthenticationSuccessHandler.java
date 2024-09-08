@@ -28,7 +28,6 @@ public class RestAuthenticationSuccessHandler implements AuthenticationSuccessHa
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
 
         mapper.writeValue(response.getWriter(), accountDto);
-        //mapper.writeValueAsString(accountDto);
 
         clearAuthenticationAttributes(request);
     }
