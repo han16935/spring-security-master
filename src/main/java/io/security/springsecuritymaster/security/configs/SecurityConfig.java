@@ -1,5 +1,6 @@
 package io.security.springsecuritymaster.security.configs;
 
+import io.security.springsecuritymaster.security.entrypoint.RestAuthenticationEntryPoint;
 import io.security.springsecuritymaster.security.filter.RestAuthenticationFilter;
 import io.security.springsecuritymaster.security.handler.*;
 import io.security.springsecuritymaster.security.provider.RestAuthenticationProvider;
@@ -53,13 +54,18 @@ public class SecurityConfig {
         AuthenticationManager authenticationManager = builder.build();
 
         http
-                .securityMatcher("/api/login") // /공식 문서에서 @RequestMapping 느낌으로 사용중인듯
+                .securityMatcher("/api/**")
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/css/**", "/images/**", "/js/**", "/favicon.*", "/error", "/*/icon-*").permitAll()
-                        .anyRequest().permitAll())
+                        .requestMatchers("/api/user").hasRole("USER")
+                        .requestMatchers("/api/manager").hasRole("MANAGER")
+                        .requestMatchers("/api/admin").hasRole("ADMIN"))
                 .csrf(AbstractHttpConfigurer::disable)
                 .authenticationManager(authenticationManager)
                 .addFilterBefore(restAuthenticationFilter(http, authenticationManager), UsernamePasswordAuthenticationFilter.class)
+                .exceptionHandling(exception -> exception
+                        .authenticationEntryPoint(new RestAuthenticationEntryPoint())
+                        .accessDeniedHandler(new RestAccessDeniedHandler()))
         ;
         return http.build();
     }

@@ -25,4 +25,11 @@ public class DashboardController {
 	public String admin() {
 		return "/admin";
 	}
+
+	@GetMapping(value="/api")
+	public String restDashBoard() {
+		return "rest/dashboard";
+	}
+
+
 }
