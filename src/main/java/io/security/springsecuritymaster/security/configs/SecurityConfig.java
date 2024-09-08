@@ -2,6 +2,7 @@ package io.security.springsecuritymaster.security.configs;
 
 import io.security.springsecuritymaster.security.filter.RestAuthenticationFilter;
 import io.security.springsecuritymaster.security.handler.FormAccessDeniedHandler;
+import io.security.springsecuritymaster.security.provider.RestAuthenticationProvider;
 import jakarta.servlet.Filter;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -39,11 +40,13 @@ public class SecurityConfig {
     private final AuthenticationSuccessHandler successHandler;
     private final AuthenticationFailureHandler failureHandler;
 
+    private final RestAuthenticationProvider restAuthenticationProvider;
     @Bean
     @Order(1)
     public SecurityFilterChain restSecurityFilterChain(HttpSecurity http) throws Exception {
 
         AuthenticationManagerBuilder builder = http.getSharedObject(AuthenticationManagerBuilder.class);
+        builder.authenticationProvider(restAuthenticationProvider);
         AuthenticationManager authenticationManager = builder.build();
 
         http
